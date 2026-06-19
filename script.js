@@ -6,6 +6,7 @@ const taskManagerContainer = document.querySelector(".task-manager");
 const confirmEl = document.querySelector(".confirm");
 const confirmedBtn = confirmEl.querySelector(".confirmed");
 const cancelledBtn = confirmEl.querySelector(".cancel");
+const themeToggleBtn = document.getElementById("theme-toggle");
 
 let indexToBeDeleted = null
       const taskContainer = document.getElementById('task-container');
@@ -19,6 +20,30 @@ console.log("savedTasks..", savedTasks);
 function addTask(){
     localStorage.setItem("tasks",JSON.stringify(savedTasks));
 }
+
+// Theme handling
+function applyTheme(theme) {
+  if (!theme) return;
+  document.documentElement.setAttribute('data-theme', theme);
+  localStorage.setItem('theme', theme);
+  if (themeToggleBtn) {
+    themeToggleBtn.textContent = theme === 'dark' ? 'Light Mode' : 'Dark Mode';
+    themeToggleBtn.setAttribute('aria-pressed', theme === 'dark');
+  }
+}
+
+// Initialize theme from storage
+(function(){
+  const savedTheme = localStorage.getItem('theme') || 'light';
+  applyTheme(savedTheme);
+  if (themeToggleBtn) {
+    themeToggleBtn.addEventListener('click', () => {
+      const current = document.documentElement.getAttribute('data-theme') || 'light';
+      const next = current === 'dark' ? 'light' : 'dark';
+      applyTheme(next);
+    });
+  }
+})();
 
 
 

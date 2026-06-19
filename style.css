@@ -5,21 +5,43 @@
   font-family: 'Poppins', sans-serif;
 }
 
+/* Theme variables */
+:root {
+    --bg: linear-gradient(135deg, #f6f8ff, #eef2ff);
+    --text: #111827;
+    --card-bg: #ffffff;
+    --card-fg: #111827;
+    --btn-bg: #4e54c8;
+    --btn-hover: #8f94fb;
+    --muted: #888;
+}
+
+[data-theme="dark"] {
+    --bg: linear-gradient(135deg, #0d0d20, #27212d);
+    --text: #ffffff;
+    --card-bg: rgba(255,255,255,0.06);
+    --card-fg: #fff;
+    --btn-bg: #4e54c8;
+    --btn-hover: #8f94fb;
+    --muted: #aaa;
+}
+
 body {
-font-family: Arial, sans-serif;
-    background: linear-gradient(135deg, #2c2c8a, #8a56c2);
+    font-family: Arial, sans-serif;
+    background: var(--bg);
     margin: 0;
     padding: 0;
     text-align: center;
-    height: 100vh;
+    min-height: 100vh;
+    color: var(--text);
 }
 
 h1 {
-  font-size: 2.5rem;
-  color: #fff;
-  margin-bottom: 10px;
-  letter-spacing: 1px;
-  text-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
+    font-size: 2.5rem;
+    color: var(--text);
+    margin-bottom: 10px;
+    letter-spacing: 1px;
+    text-shadow: 0 2px 6px rgba(0, 0, 0, 0.12);
 }
 
 
@@ -29,6 +51,25 @@ h1 {
     justify-content: center;
     align-items: center;
     margin-top: 10px;
+}
+
+/* Header layout */
+.header-row {
+    width: 90%;
+    max-width: 1100px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 12px 0;
+}
+
+.theme-toggle button {
+    padding: 8px 12px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    background: var(--btn-bg);
+    color: #fff;
 }
 
 #task-input {
