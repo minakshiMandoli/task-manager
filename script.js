@@ -1,8 +1,14 @@
 
 //selecting elements
 const input = document.getElementById("task-input");
-const addTaskBtn = document.getElementById("add-task");
-const taskList = document.getElementById("task-list");
+const addTaskBtn = document.getElementById("add-task-btn");
+const taskManagerContainer = document.querySelector(".task-manager");
+const confirmEl = document.querySelector(".confirm");
+const confirmedBtn = confirmEl.querySelector(".confirmed");
+const cancelledBtn = confirmEl.querySelector(".cancel");
+
+let indexToBeDeleted = null
+      const taskContainer = document.getElementById('task-container');
 
 // load tasks from local storage when the page loads
 
@@ -14,58 +20,63 @@ function addTask(){
     localStorage.setItem("tasks",JSON.stringify(savedTasks));
 }
 
-//create a new task and add it to the list
-function createTaskNode(task, index){
-    const li=document.createElement("li");
 
-         const checkbox = document.createElement('input');
-    checkbox.type = 'checkbox';
-    checkbox.checked = !!task.completed;
-    checkbox.addEventListener("change", () => {
-        task.completed = checkbox.checked;
-        addTask();
-    })
 
-    // Text of the todo
-    const textSpan = document.createElement("span");
-    textSpan.textContent = task.text;
-    textSpan.style.margin = '0 8px';
+function createTaskNode(task, index) {
+    const taskCard = document.createElement('div');
+    taskCard.classList.add('taskCard');
+    let classVal = "pending";
+    let textVal = "Pending"
     if (task.completed) {
-        textSpan.style.textDecoration = 'line-through';
+      classVal = "completed";
+      textVal = "Completed";
     }
-    // Add double-click event listener to edit todo
-    textSpan.addEventListener("dblclick", () => {
-        const newText = prompt("Edit todo", task.text);
-        if (newText !== null) {
-            task.text = newText.trim()
-            textSpan.textContent = task.text;
-            addTask();
-        }
-    })
+    taskCard.classList.add(classVal);
 
-    // Delete Todo Button 
-    const delBtn = document.createElement('button');
-    delBtn.textContent = "Delete";
-    delBtn.addEventListener('click', () => {
-        savedTasks.splice(index, 1);
-        renderTasks();
-        addTask();
-    })
+    const taskText = document.createElement('p');
+    taskText.innerText = task.text;
 
-    li.append(checkbox, textSpan, delBtn);
-    return li
-    
+    const taskStatus = document.createElement('p');
+    taskStatus.classList.add('status');
+    taskStatus.innerText = textVal;
+
+    const toggleButton = document.createElement('button');
+    toggleButton.classList.add("button-box");
+    const btnContentEl = document.createElement("span");
+    btnContentEl.classList.add("green");
+    btnContentEl.innerText = task.completed ? 'Mark as Pending' : 'Mark as Completed';
+    toggleButton.appendChild(btnContentEl);
+    toggleButton.addEventListener('click', () => {
+      savedTasks[index].completed = !savedTasks[index].completed;
+      addTask();
+      renderTasks();
+    });
+
+    const deleteButton = document.createElement('button');
+    deleteButton.classList.add("button-box");
+    const delBtnContentEl = document.createElement("span");
+    delBtnContentEl.classList.add("red");
+    delBtnContentEl.innerText = 'Delete';
+    deleteButton.appendChild(delBtnContentEl);
+    deleteButton.addEventListener('click', () => {
+      indexToBeDeleted = index;
+      confirmEl.style.display = "block";
+      taskManagerContainer?.classList.add("overlay");
+    });
+
+    taskCard.append(taskText, taskStatus, toggleButton, deleteButton);
+  taskContainer.appendChild(taskCard);
 }
-
 // render tasks to the DOM
 function renderTasks(){
-    taskList.innerHTML="";
 
-    console.log("savedTasks.. inside render", savedTasks);    
-    savedTasks.forEach((task,index)=>{
-        const node= createTaskNode(task,index);
-        taskList.appendChild(node);
+  taskContainer.innerHTML = '';
+
+  savedTasks.forEach((task,index)=>{
+        createTaskNode(task,index);
+      
     });
+  
 }
 
 function addTodo() {
@@ -84,4 +95,24 @@ function addTodo() {
 
 // add task event listener
 addTaskBtn.addEventListener("click", addTodo);
+function deleteTask(index) {
+  savedTasks.splice(index, 1);
+  addTask();
+  renderTasks();
+}
+
+confirmedBtn.addEventListener("click", () => {
+  confirmEl.style.display = "none";
+  taskManagerContainer?.classList.remove("overlay");
+  if (indexToBeDeleted !== null) {
+    deleteTask(indexToBeDeleted);
+  }
+  indexToBeDeleted = null;
+});
+
+cancelledBtn.addEventListener("click", () => {
+  confirmEl.style.display = "none";
+  taskManagerContainer?.classList.remove("overlay");
+  indexToBeDeleted = null;
+});
 renderTasks()

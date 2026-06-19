@@ -6,14 +6,12 @@
 }
 
 body {
-  background: linear-gradient(135deg, #667eea, #764ba2);
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: start;
-  padding-top: 80px;
-  color: #333;
+font-family: Arial, sans-serif;
+    background: linear-gradient(135deg, #2c2c8a, #8a56c2);
+    margin: 0;
+    padding: 0;
+    text-align: center;
+    height: 100vh;
 }
 
 h1 {
@@ -24,16 +22,29 @@ h1 {
   text-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
 }
 
-/* .task-manager {
-  background: rgba(255, 255, 255, 0.15);
-  border-radius: 16px;
-  backdrop-filter: blur(12px);
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
-  padding: 30px;
-  width: 400px;
-} */
 
-#add-task {
+
+#task-form {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 10px;
+}
+
+#task-input {
+  width: 300px;
+  padding: 10px 14px;
+  margin: 20px 0;
+  border-radius: 8px;
+  border: none;
+  outline: none;
+  font-size: 1rem;
+  
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.15);
+}
+
+
+#add-task-btn {
   margin-left: 10px;
   padding: 10px 20px;
   background: #4e54c8;
@@ -46,61 +57,157 @@ h1 {
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
 }
 
-#add-task:hover {
+#add-task-btn:hover {
   background: #8f94fb;
   transform: translateY(-2px);
   box-shadow: 0 6px 14px rgba(0, 0, 0, 0.3);
 }
 
 
-#task-list {
-  list-style: none;
-  margin-top: 30px;
-  padding: 0;
-  width: 360px;
-  background: rgba(255, 255, 255, 0.15);
-  border-radius: 16px;
-  backdrop-filter: blur(12px);
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
-  overflow: hidden;
+.button-box {
+    background: #FCFCFC;
+    border-radius: 20px;
+    outline: 0;
+    border: none;
+    box-shadow: 2px 2px 10px rgba(119, 119, 119, 0.5);
+    transition: all 0.5s ease-in-out;
+    margin-top: 1rem;
+    padding: 12px 10px;
 }
 
-/* Each Todo Item */
-#task-list li {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 12px 16px;
-  color: #fff;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-  transition: background 0.3s ease;
+.button-box:hover {
+    background: #efefef;
+    transform: scale(1.05);
+    transition: all 0.3s ease-in-out;
+    cursor: pointer;;
 }
 
-#task-list li:hover {
-  background: rgba(255, 255, 255, 0.1);
+.green {
+    color: #4ec07d;
 }
 
-#task-list button {
-
-
-  background: #ff4b5c;
-  color: #fff;
-  border: none;
-  border-radius: 6px;
-  padding: 6px 12px;
-  cursor: pointer;
-  font-size: 0.9rem;
-  transition: all 0.3s ease;
+.red {
+    color: #e96075;
 }
 
-#task-input {
-  width: 300px;
-  padding: 10px 14px;
-  margin: 20px 0;
-  border-radius: 8px;
-  border: none;
-  outline: none;
-  font-size: 1rem;
-
-  box-shadow: 0 0 8px rgba(0, 0, 0, 0.15);
+.button-box span {
+    font-size: 0.9em;
+    font-weight: 100;
+    letter-spacing: 3px;
+    padding-top: 5px;
+    /* color: #FCFCFC; */
+    padding-bottom: 5px;
+    text-transform: uppercase;
 }
+
+#taskContainer {
+    display: flex;
+       flex-wrap: wrap;
+    margin: 20px;
+}
+.taskCard {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: stretch;
+    background-color: #ffffff;
+    box-shadow: 5px 5px 20px rgba(203, 205, 211, 0.1);
+    padding: 16px;
+    top: 1rem;
+    width: 250px;
+    min-height: 175px;
+    margin: 15px;
+    border-radius: 4px;
+    transition: box-shadow 0.3s ease;
+}
+
+.taskCard.completed {
+    background: linear-gradient(to bottom right, #B0DB7D 40%, #99DBB4 100%);
+}
+
+.taskCard.pending {
+    background: linear-gradient(to bottom left, #EF8D9C 40%, #FFC39E 100%);
+    
+}
+
+.taskCard p {
+    margin: 0;
+    font-size: 1.2rem;
+    color: #fff;
+    word-wrap: break-word;
+}
+
+.taskCard .status {
+    margin-top: 10px;
+    font-size: 14px;
+    font-size: 1.1em;
+    font-weight: 100;
+    color: #5e5e5e;
+    letter-spacing: 1px;
+}
+
+.confirm {
+    display: none;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 80%;
+    min-width: 280px;
+    max-width: 500px;
+    height: auto;
+    background: #E2E2E2;
+    border-radius: 10px;
+    padding: 0;
+    margin: 0;
+    border-top: 1px solid white;
+    animation: fade 0.5s ease 1 forwards;
+}
+
+.confirm h1 {
+    text-align: center;
+    font-size: 1.2rem;
+    margin: 1.5rem 1rem 0.5rem;
+}
+
+.confirm p {
+    text-align: center;
+    font-size: 1rem;
+    margin: 0 2rem 4.5rem;
+}
+
+.confirm button {
+    background: transparent;
+    border: none;
+    color: #1678E5;
+    height: 3rem;
+    font-size: 1rem;
+    width: 50%;
+    position: absolute;
+    bottom: 0;
+    cursor: pointer;
+}
+
+.confirm button:nth-of-type(1) {
+    border-top: 1px solid #B4B4B4;
+    border-right: 1px solid #B4B4B4;
+    left: 0;
+    border-radius: 0 0 0 10px;
+}
+
+.confirm button:nth-of-type(2) {
+    border-top: 1px solid #B4B4B4;
+    right: 0;
+    border-radius: 0 0 10px 0;
+}
+
+.confirm button:focus,
+.confirm button:hover {
+    font-weight: bold;
+    background: #EFEFEF;
+}
+
+.confirm button:active {
+    background: #D6D6D6;
+}
+
