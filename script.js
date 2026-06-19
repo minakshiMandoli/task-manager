@@ -7,6 +7,7 @@ const confirmEl = document.querySelector(".confirm");
 const confirmedBtn = confirmEl.querySelector(".confirmed");
 const cancelledBtn = confirmEl.querySelector(".cancel");
 const themeToggleBtn = document.getElementById("theme-toggle");
+const clearAllBtn = document.getElementById("clear-all-btn");
 
 let indexToBeDeleted = null
       const taskContainer = document.getElementById('task-container');
@@ -41,6 +42,17 @@ function applyTheme(theme) {
       const current = document.documentElement.getAttribute('data-theme') || 'light';
       const next = current === 'dark' ? 'light' : 'dark';
       applyTheme(next);
+    });
+  }
+  // Clear all handler inside init to ensure DOM exists
+  if (clearAllBtn) {
+    clearAllBtn.addEventListener('click', () => {
+      if (!savedTasks.length) return;
+      if (confirm('Clear all tasks? This cannot be undone.')) {
+        savedTasks.length = 0;
+        addTask();
+        renderTasks();
+      }
     });
   }
 })();
